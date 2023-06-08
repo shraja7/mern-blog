@@ -1,0 +1,76 @@
+body {
+  color: #333;
+}
+
+img {
+  max-width: 100%;
+}
+
+main {
+  padding: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  align-items: center;
+}
+
+header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header a.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+header nav {
+  display: flex;
+  gap: 15px;
+}
+
+div.post-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+  max-height: 100%; /* Set a maximum height */
+  overflow: hidden; /* Prevent overflow */
+  margin-bottom: 40px; /* Add bottom margin */
+}
+
+div.post-container img {
+  width: 100%;
+  height: 200px; /* Set a specific height */
+  object-fit: cover; /* Maintain aspect ratio and fill the available space */
+}
+
+div.post-container .texts {
+  overflow: hidden; /* Prevent overflow */
+}
+
+div.post-container h2 {
+  margin-top: 0;
+  margin-bottom: 10px; /* Adjust the bottom margin */
+  font-size: 1.5rem;
+}
+
+div.post-container .info {
+  margin-bottom: 5px; /* Adjust the bottom margin */
+  font-size: 0.8rem;
+}
+
+div.post-container .author {
+  text-decoration: none;
+  color: inherit;
+}
+
+div.post-container time {
+  margin-left: 10px;
+}
