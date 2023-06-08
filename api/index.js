@@ -32,4 +32,13 @@ app.post("/register", async (req, res) => {
   }
 });
 
+//route for login
+app.post("/login", async (req, res) => {
+  //respond with user and password from request body
+  const { username, password } = req.body;
+  //grab user
+  const userDoc = await User.findOne({ username });
+  res.json(userDoc);
+});
+
 app.listen(4000, () => console.log("listening at 4000"));
