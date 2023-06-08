@@ -11,7 +11,8 @@ require("dotenv").config({ path: "../.env" });
 
 //middleware including parsing json
 app.use(express.json());
-app.use(cors());
+//include credentials in cors
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 //hash password
 const salt = 10;
@@ -51,7 +52,7 @@ app.post("/login", async (req, res) => {
           process.env.JWT_SECRET,
           { expiresIn: "1h" } // Set token expiration time
         );
-        res.json({ token });
+        res.cookie("token", token).json({ message: "Login successful" });
       } catch (error) {
         res.status(400).json({ message: error.message });
       }
