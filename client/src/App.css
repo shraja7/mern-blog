@@ -69,6 +69,7 @@ div.post-container .info {
 div.post-container .author {
   text-decoration: none;
   color: inherit;
+  font-weight: bold;
 }
 
 div.post-container time {
