@@ -42,25 +42,22 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const userDoc = await User.findOne({ username });
-
-  bcrypt.compare(password, userDoc.password, async (err, result) => {
-    if (err) {
-      res.status(400).json({ message: err.message });
-    } else if (result) {
-      try {
-        const token = jwt.sign(
-          { username, id: userDoc._id },
-          process.env.JWT_SECRET,
-          { expiresIn: "1h" } // Set token expiration time
-        );
-        res.cookie("token", token).json({ message: "Login successful" });
-      } catch (error) {
-        res.status(400).json({ message: error.message });
+  const passOk = bcrypt.compareSync(password, userDoc.password);
+  if (passOk) {
+    //logged in
+    jwt.sign(
+      { username, id: userDoc._id },
+      process.env.JWT_SECRET,
+      {},
+      (err, token) => {
+        if (err) throw err;
+        res.cookie("token", token).json("ok");
       }
-    } else {
-      res.status(400).json({ message: "Login failed" });
-    }
-  });
+    );
+  } else {
+    //not logged in
+    res.status(400).json({ message: "wrong credentials" });
+  }
 });
 
 // profile endpoint
