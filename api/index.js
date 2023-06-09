@@ -6,11 +6,13 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: "../.env" });
 
 //middleware including parsing json
 app.use(express.json());
+app.use(cookieParser());
+
 //include credentials in cors
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
@@ -36,7 +38,6 @@ app.post("/register", async (req, res) => {
 });
 
 //route for login
-// ... Your existing code ...
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -62,6 +63,18 @@ app.post("/login", async (req, res) => {
   });
 });
 
-// ... Rest of your code ...
+// profile endpoint
+app.get("/profile", async (req, res) => {
+  const { token } = req.cookies;
+  jwt.verify(token, process.env.JWT_SECRET, {}, (err, info) => {
+    if (err) throw err;
+    res.json(info);
+  });
+});
+
+// logout endpoint
+app.post("/logout", (req, res) => {
+  res.cookie("token", "").json("Logout successful");
+});
 
 app.listen(4000, () => console.log("listening at 4000"));
