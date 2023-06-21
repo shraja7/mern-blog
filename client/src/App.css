@@ -75,3 +75,8 @@ div.post-container .author {
 div.post-container time {
   margin-left: 10px;
 }
+
+form.login h1,
+form.register h1 {
+  text-align: center;
+}
