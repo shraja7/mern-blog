@@ -4,10 +4,16 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/User");
+const Post = require("./models/Post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
 const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: "../.env" });
+const fs = require("fs");
+
+//set up storage for multer
+const uploadMiddleware = multer({ dest: "uploads/" });
 
 //middleware including parsing json
 app.use(express.json());
@@ -83,6 +89,28 @@ app.get("/profile", (req, res) => {
 // logout endpoint
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("Logout successful");
+});
+
+//endpoist for post reqeust to create new post
+app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
+  const { originalname, path } = req.file;
+  //take original name and split it
+  const parts = originalname.split(".");
+  const ext = parts[parts.length - 1];
+  const newPath = path + "." + ext;
+  //rename file and add extension to the end
+  fs.renameSync(path, newPath);
+
+  //save payload to db
+  const { title, summary, content } = req.body;
+  const postDoc = await Post.create({
+    title,
+    summary,
+    content,
+    cover: newPath,
+  });
+
+  res.json(postDoc);
 });
 
 app.listen(4000, () => console.log("listening at 4000"));
