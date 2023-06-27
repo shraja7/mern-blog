@@ -7,6 +7,10 @@ const PostSchema = new mongoose.Schema(
     content: String,
     file: String,
     cover: String,
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,

@@ -18,6 +18,7 @@ const uploadMiddleware = multer({ dest: "uploads/" });
 //middleware including parsing json
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 const secret = "s56f4as6d5f4s6d5f4sd5f4";
 
 //include credentials in cors
@@ -100,17 +101,27 @@ app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
   const newPath = path + "." + ext;
   //rename file and add extension to the end
   fs.renameSync(path, newPath);
-
-  //save payload to db
-  const { title, summary, content } = req.body;
-  const postDoc = await Post.create({
-    title,
-    summary,
-    content,
-    cover: newPath,
+  const { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (err, info) => {
+    if (err) throw err;
+    const { title, summary, content } = req.body;
+    const postDoc = await Post.create({
+      title,
+      summary,
+      content,
+      cover: newPath,
+      author: info.id,
+    });
+    res.json(postDoc);
   });
 
-  res.json(postDoc);
+  //save payload to db
 });
-
+app.get("/post", async (req, res) => {
+  const postDocs = await Post.find()
+    .populate("author", ["username"])
+    .sort({ createdAt: -1 })
+    .limit(20);
+  res.json(postDocs);
+});
 app.listen(4000, () => console.log("listening at 4000"));

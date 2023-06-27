@@ -60,6 +60,10 @@ div.post-container h2 {
   margin-bottom: 10px; /* Adjust the bottom margin */
   font-size: 1.5rem;
 }
+div.post-container div.texts a {
+  text-decoration: none;
+  color: inherit;
+}
 
 div.post-container .info {
   margin-bottom: 5px; /* Adjust the bottom margin */
