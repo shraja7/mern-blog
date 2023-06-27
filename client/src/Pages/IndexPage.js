@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Post from "../Post";
 
 const IndexPage = () => {
-  return (
-    <>
-      <Post />
-      <Post />
-      <Post />
-    </>
-  );
+  //set the fetched posts to state
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    //when component mounts, fetch all posts using fetch api
+    fetch("http://localhost:4000/post").then((response) => {
+      response.json().then((posts) => {
+        setPosts(posts);
+      });
+    });
+  }, []);
+  return <>{posts.length > 0 && posts.map((post) => <Post {...post} />)}</>;
 };
 
 export default IndexPage;
