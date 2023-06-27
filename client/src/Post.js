@@ -5,10 +5,7 @@ const Post = ({ title, summary, cover, content, createdAt, author }) => {
   return (
     <div className="post">
       <div className="post-container">
-        <img
-          src="https://images.unsplash.com/photo-1550399504-8953e1a6ac87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1329&q=80"
-          alt=""
-        />
+        <img src={`http://localhost:4000/${cover}`} alt="" />
         <div className="texts">
           <h2>{title}</h2>
           <p className="info">
